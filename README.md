@@ -153,7 +153,7 @@ helm upgrade -i cert-manager jetstack/cert-manager -n cert-manager --create-name
 ### Install rancher
 
 ```shell
-# Installing rancher UI
+# Installing rancher UI, remember to use an FQDN and not the hostname of the server
 export RANCHER_HOST_NAME=rke-1.techin48.com
 helm upgrade -i rancher rancher-latest/rancher --create-namespace --namespace cattle-system --set hostname=$RANCHER_HOST_NAME --set bootstrapPassword=abcd123456 --set replicas=1
 
@@ -184,7 +184,7 @@ NAME                       READY   STATUS    RESTARTS   AGE
 helm-operation-lcj5q       2/2     Running   0          20s
 ```
 
-### Accessing Rancher via the UI (Use your hostname)
+### Accessing Rancher via the UI (Use your FQDN)
 
 * Click https://rke-1.techin48.com
 * Login with the password set up
@@ -208,7 +208,20 @@ helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --create-
 ```
 ### Go back to the host being set up
 * Click https://rke-1.techin48.com
-* Longhorn should show up here and allow you to manage
+* Longhorn should show up here and allow you to manage in the "Apps" section
+
+### Exercise
+
+* Install a simple nginx application using the following and analyze
+ the storage, the pods, deployments etc. If you have any questions
+refer to the 12th minute of the video https://www.youtube.com/watch?v=oM-6sd4KSmA
+
+* 
+```shell
+kubectl apply -f https://raw.githubusercontent.com/clemenko/k8s_yaml/master/flask_simple_nginx.yml
+```
+
+
 
 ## References
 
