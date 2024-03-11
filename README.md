@@ -213,8 +213,7 @@ helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --create-
 ### Exercise
 
 * Install a simple nginx application using the following and analyze
- the storage, the pods, deployments etc. If you have any questions
-refer to the 12th minute of the video https://www.youtube.com/watch?v=oM-6sd4KSmA
+ the storage, the pods, deployments etc. Refer to the 12th minute of the video https://www.youtube.com/watch?v=oM-6sd4KSmA
 
 * 
 ```shell
