@@ -100,7 +100,7 @@ K1073237ec96f322c98ec4ca766bc2290d4ebe56ec096e8834ee4afece268d86708::server:123f
 export RANCHER_MASTER_IP=<current-ip-of-master-node>  
 
 # and we can export the token from rke1
-export TOKEN=K1073237ec96f322c98ec4ca766bc2290d4ebe56ec096e8834ee4afece268d86708::server:123f3ba5b4ca43c4f432b1a562624136
+export TOKEN=<from-master>
 
 # we add INSTALL_RKE2_TYPE=agent, it installs th agent
 curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.26 INSTALL_RKE2_TYPE=agent sh -  
@@ -164,11 +164,7 @@ jetstack/cert-manager \
 -n cert-manager \
 --create-namespace \
 --set installCRDs=true
-```
 
-##### Install rancher
-
-```shell
 # Installing rancher UI, remember to use an FQDN and not the hostname of the server
 export RANCHER_HOST_NAME=<change-this>
 helm upgrade -i \
@@ -198,12 +194,17 @@ If this is the first time you installed Rancher, get started by running this com
 echo https://rke-1.techin48.com/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
 
 To get just the bootstrap password on its own, run:
-kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
+kubectl get secret --namespace cattle-system \bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
 
 # Verifying the installation is successful.
 kubectl get pods -n cattle-system
 NAME                       READY   STATUS    RESTARTS   AGE
 helm-operation-lcj5q       2/2     Running   0          20s
+
+
+# If for any reason the password fails try
+ kubectl -n cattle-system \
+ exec $(kubectl  -n cattle-system get pods -l app=rancher | grep '1/1' | head -1 | awk '{ print $1 }') -- reset-password
 ```
 
 ##### Accessing Rancher via the UI (Use your FQDN)
@@ -226,7 +227,10 @@ helm repo add longhorn https://charts.longhorn.io
 helm repo update
 
 # install
-helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --create-namespace
+helm upgrade -i \
+longhorn longhorn/longhorn \
+--namespace longhorn-system \
+--create-namespace
 ```
 
 #### Exercise
